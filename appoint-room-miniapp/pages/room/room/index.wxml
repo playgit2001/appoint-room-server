@@ -1,0 +1,70 @@
+<!--pages/project/project-detail/index.wxml-->
+<view class="container">
+  <image src="{{project.picUrl}}" class="slide-image" />
+
+  <view class="project-info">
+    <view class="project-name">{{project.projectName}}</view>
+    <view class="price">￥{{project.price}}</view>
+  </view>
+
+  <view class="project-info">
+    <view class='title'>项目详情</view>
+    <rich-text nodes="{{project.describe}}"></rich-text>
+  </view>
+
+  <view class="project-info">
+    <view class='weui-flex'>
+      <view class='weui-flex__item title'>评价</view>
+    </view>
+    <view class='list-item' wx:for="{{evaluations}}" wx:key="index">
+      <view class='weui-flex user-info'>
+        <image class='avatar' src='{{item.member.avatarUrl}}'></image>
+        <view class="info">
+          <view class='nick-name'>{{item.member.nickname}}</view>
+          <view class='create-time'>{{item.createTime}}</view>
+        </view>
+      </view>
+      <view class='content'>
+        {{item.content}}
+      </view>
+    </view>
+  </view>
+
+  <view class="footer-box">
+    <view class="now-buy" bindtap="tapBuy" data-id='{{project.id}}'>立即预约</view>
+  </view>
+
+  <view class="weui-footer weui-footer_fixed-bottom" hidden='true'>
+    <view class="weui-flex">
+      <button class='action' bindtap='returnHome'>
+        <icon class='iconfont icon-home'></icon>
+        <text>首页</text>
+      </button>
+
+      <button class='action' open-type="contact" session-from='mini-app'
+        send-message-path="/pages/appoint/project-detail/index" show-message-card="true"
+        send-message-title="{{project.name}}">
+        <icon class='iconfont icon-kf'></icon>
+        <text>客服</text>
+      </button>
+      <view class="weui-flex__item">
+        <button type="primary" class="btn-phone" bindtap="tapAddShopCart">加入购物车</button>
+      </view>
+      <view class="weui-flex__item">
+        <button type="warn" class="btn-phone" bindtap="tapBuy">立即购买</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="weui-footer weui-footer_fixed-bottom" hidden='true'>
+    <view class="weui-flex">
+      <view class="weui-flex__item">
+        <button type="primary" class="btn-phone" bindtap="telPhone">电话咨询</button>
+      </view>
+      <view class="weui-flex__item">
+        <button type="warn" class="btn-phone" data-id='{{projectDetail.projectId}}' open-type="getPhoneNumber"
+          bindgetphonenumber="getPhoneNumber">立即预约</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,18 @@
+<!--pages/room/room-detail/index.wxml-->
+<view class="container">
+  <image src="{{room.picUrl}}" class="slide-image" />
+
+  <view class="room-info">
+    <view class="room-name">{{room.roomName}}</view>
+  </view>
+
+  <view class="room-info">
+    <view class='title'>房间详情</view>
+    <rich-text nodes="{{room.remark}}"></rich-text>
+  </view>
+
+  <view class="footer-box">
+    <view class="now-buy" bindtap="tapBuy" data-id='{{room.id}}'>立即预约</view>
+  </view>
+
+</view>

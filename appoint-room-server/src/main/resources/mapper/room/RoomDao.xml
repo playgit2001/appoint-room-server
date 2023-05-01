@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wfuhui.modules.room.dao.RoomDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wfuhui.modules.room.entity.RoomEntity" id="roomMap">
+        <result property="id" column="id"/>
+        <result property="roomName" column="room_name"/>
+        <result property="remark" column="remark"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="totalPeople" column="total_people"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.wfuhui.modules.room.entity.RoomEntity">
+		select * from appoint_room where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.wfuhui.modules.room.entity.RoomEntity">
+		select p.*,c.category_name as 'category.categoryName' from appoint_room p 
+		left join appoint_category c on c.id = p.category_id
+		<where>
+			<if test="categoryId != null and categoryId != -1">
+				and p.category_id = #{categoryId}
+			</if>
+			<if test="roomName != null and roomName != ''">
+				and p.room_name like '%${roomName}%'
+			</if>
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from appoint_room p
+		<where>
+			<if test="categoryId != null and categoryId != -1">
+				and p.category_id = #{categoryId}
+			</if>
+			<if test="roomName != null and roomName != ''">
+				and p.room_name like '%${roomName}%'
+			</if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.wfuhui.modules.room.entity.RoomEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into appoint_room
+		(
+			`room_name`, 
+			`remark`, 
+			`pic_url`, 
+			`total_people`, 
+			`category_id`, 
+			`create_time`
+		)
+		values
+		(
+			#{roomName}, 
+			#{remark}, 
+			#{picUrl}, 
+			#{totalPeople}, 
+			#{categoryId}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.wfuhui.modules.room.entity.RoomEntity">
+		update appoint_room 
+		<set>
+			<if test="roomName != null">`room_name` = #{roomName}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="picUrl != null">`pic_url` = #{picUrl}, </if>
+			<if test="totalPeople != null">`total_people` = #{totalPeople}, </if>
+			<if test="categoryId != null">`category_id` = #{categoryId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from appoint_room where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from appoint_room where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

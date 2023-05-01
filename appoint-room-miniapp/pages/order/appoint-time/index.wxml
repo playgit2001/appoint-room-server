@@ -1,0 +1,40 @@
+<!--pages/appoint/index.wxml-->
+<view class='container'>
+  <form bindsubmit='saveAppoint'>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">房间</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-input">{{room.roomName}}</view>
+        </view>
+      </view>
+      
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">日期</view>
+        </view>
+        <view class="weui-cell__bd">
+            <picker mode="date" bindchange="changeDate">
+              <view class="weui-input">{{appointDate}}</view>
+            </picker>
+        </view>
+      </view>
+   
+    </view>
+
+    <view class="weui-grids appoint-time">
+      <block wx:for="{{timeList}}" wx:key="index">
+        <view class="weui-grid category {{item.id == timeId ? 'active' : ''}}" bindtap="tabTime" data-id="{{item.id}}" data-starttime="{{item.startTime}}" data-endtime="{{item.endTime}}">
+          <view class="weui-grid__label label">{{item.startTime}}~{{item.endTime}}</view>
+          <view class="weui-grid__label label">{{item.status == 1 ? '可预订' : '已预订'}}</view>
+        </view>
+      </block>
+    </view>
+
+    <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" form-type='submit'>立即预约</button>
+    </view>
+  </form>
+</view>

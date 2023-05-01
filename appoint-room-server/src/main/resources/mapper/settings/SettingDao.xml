@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wfuhui.modules.settings.dao.SettingDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wfuhui.modules.settings.entity.SettingEntity" id="settingMap">
+        <result property="id" column="id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.wfuhui.modules.settings.entity.SettingEntity">
+		select * from appoint_setting where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.wfuhui.modules.settings.entity.SettingEntity">
+		select s.*, h.room_name 'room.roomName' from appoint_setting s left join appoint_room h on s.room_id = h.id
+        <where>
+        	<if test="roomId != null">
+				and room_id = #{roomId}
+			</if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by s.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from appoint_setting 
+	</select>
+	 
+	<insert id="save" parameterType="com.wfuhui.modules.settings.entity.SettingEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into appoint_setting
+		(
+			`room_id`, 
+			`start_time`, 
+			`end_time`
+		)
+		values
+		(
+			#{roomId}, 
+			#{startTime}, 
+			#{endTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.wfuhui.modules.settings.entity.SettingEntity">
+		update appoint_setting 
+		<set>
+			<if test="roomId != null">`room_id` = #{roomId}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from appoint_setting where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from appoint_setting where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

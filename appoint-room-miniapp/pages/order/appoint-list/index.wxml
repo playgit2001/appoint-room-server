@@ -1,0 +1,36 @@
+<wxs module="util" src="../../../utils/util.wxs"></wxs>
+<view class="container">
+  <view class="weui-tab">
+    <view class="weui-navbar">
+      <block wx:for="{{tabs}}" wx:key="*this">
+        <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+          <view class="weui-navbar__title">{{item}}</view>
+        </view>
+      </block>
+      <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+    </view>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content">
+        <view class="book-no" hidden="{{appointList.length != 0}}">
+          <view class="label">
+            暂无预约
+          </view>
+        </view>
+        <view class="order-list" hidden="{{appointList.length > 0 ? false : true}}" wx:for="{{appointList}}" wx:key="*this">
+          <view class='order-time'>预约时间：{{item.appointTime}}  {{item.time}}</view>
+          <view class="weui-flex goods-info" wx:key="index">
+            <image src="{{item.room.picUrl}}" class="image" mode='scaleToFill' />
+            <view class="info">
+              <view class="goods-title">{{item.room.roomName}}</view>
+            </view>
+          </view>
+          <view class="weui-flex option">
+            <view class="syt"></view>
+            <button class="btn-cancel" data-id='{{item.id}}' data-totalamount="{{item.totalAmount}}" size="mini" plain="true" wx:if="{{item.status == 1}}" bindtap='cancel'>取消</button>
+            
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

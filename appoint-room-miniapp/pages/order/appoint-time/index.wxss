@@ -1,0 +1,70 @@
+/* pages/appoint/index.wxss */
+page{
+  height: 100%;
+}
+
+textarea{
+  padding: 20rpx 20rpx 20rpx 0;
+}
+
+
+.flex-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15rpx;
+}
+
+.stock {
+  font-size: 30rpx;
+  color: #ef8203;
+}
+
+.info {
+  width: 540rpx;
+}
+
+.category {
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.goods-item{
+  padding: 20rpx;
+}
+
+.goods-box .img-box {
+  width: 223.333rpx;
+  height: 223.333rpx;
+  overflow: hidden;
+}
+
+image {
+  width: 223.333rpx;
+  height: 223.333rpx;
+  margin-right: 20rpx;
+}
+
+.goods-title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.price {
+  font-size: 32rpx;
+  color: #e64340
+}
+
+.hospital-name{
+  word-break:keep-all;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis; 
+}
+
+.appoint-time{
+  margin-top: 20rpx;
+}
+
+.category.active view{
+  color: #e64340;
+}

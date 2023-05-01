@@ -1,0 +1,129 @@
+/**index.wxss**/
+swiper{
+  height: 300rpx;
+}
+
+.slide-image{
+  width: 750rpx;
+  height: 300rpx;
+}
+
+.category-container{
+  background: #FFFFFF
+}
+
+.weui-grids{
+  border: none;
+}
+
+.weui-grid{
+  border: none;
+}
+
+.weui-grid.category{
+  width: 25%;
+  padding: 20rpx 0rpx;
+}
+
+.room-container{
+  padding: 5rpx;
+}
+
+.weui-grid.room{
+  width: 350rpx;
+  background: #FFFFFF;
+  margin: 10rpx;
+  padding: 0rpx;
+}
+
+.weui-grid__icon.room{
+  width: 350rpx;
+  height: 350rpx;
+}
+
+.weui-grid__label.room{
+  text-align: left;
+  padding-left: 5rpx;
+}
+
+.weui-grids .label{
+  font-size: 26rpx;
+}
+
+.weui-grids .price{
+  font-size: 26rpx;
+  color: #e64340
+}
+
+.share-img {
+  border-radius: 90rpx;
+  padding: 10rpx;
+  position: fixed;
+  bottom: 50rpx;
+  right: 30rpx;
+  z-index: 999999;
+  background-size: 90rpx 90rpx;
+  background: #ef8203;
+  width: 90rpx;
+  height: 90rpx;
+  box-shadow:0 0 20rpx 0 #888;
+}
+
+.share-img image{
+  width: 70rpx;
+  height: 70rpx;
+}
+.room-info {
+  background-color: #fff;
+  padding: 5rpx;
+  margin-bottom: 15rpx;
+}
+
+.room-info .price{
+  font-size: 28rpx;
+  color: #ef8203
+}
+
+.room-info .title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.room-info .more{
+  font-size: 32rpx;
+  margin-right: 10rpx;
+}
+
+.room-info .head{
+  align-items: center;
+}
+
+.room-info .item{
+  font-size: 32rpx;
+  color: #555;
+}
+
+.train-item{
+  width: 220rpx;
+  text-align: center;
+  float: left;
+}
+
+.train-item image{
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 50%;
+}
+
+.train-item .name{
+  font-size: 32rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: 20rpx;
+  border-left: 6rpx solid #e64340;
+  padding-left: 8rpx;
+}

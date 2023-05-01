@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wfuhui.modules.order.dao.OrderDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wfuhui.modules.order.entity.OrderEntity" id="appointMap">
+        <result property="id" column="id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="orderNumber" column="order_number"/>
+        <result property="userId" column="user_id"/>
+        <result property="appointTime" column="appoint_time"/>
+        <result property="time" column="time"/>
+        <result property="timeId" column="time_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.wfuhui.modules.order.entity.OrderEntity">
+		select * from appoint_order where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.wfuhui.modules.order.entity.OrderEntity">
+		select a.*, p.pic_url as 'room.picUrl', p.room_name as 'room.roomName', u.nickname as 'user.nickname', u.real_name as 'user.realName', u.mobile as 'user.mobile'
+		from appoint_order a left join appoint_room p on a.room_id = p.id
+		left join base_member u on u.id = a.user_id
+		<where>
+			<if test="status != null and status != '' and status != -1">
+				and a.status = #{status}
+			</if>
+			<if test="userId != null">
+				and a.user_id = #{userId}
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				and a.order_number like '%${orderNumber}%'
+			</if>
+			<if test="realName != null and realName != ''">
+				and u.real_name like '%${realName}%'
+			</if>
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(1) from appoint_order a left join base_member u on u.id = a.user_id
+		<where>
+			<if test="date">
+				and appoint_time like concat('%',#{date},'%') 
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				and a.order_number like '%${orderNumber}%'
+			</if>
+			<if test="realName != null and realName != ''">
+				and u.real_name like '%${realName}%'
+			</if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.wfuhui.modules.order.entity.OrderEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into appoint_order
+		(
+			`id`, 
+			`room_id`, 
+			`order_number`, 
+			`user_id`, 
+			`status`, 
+			`appoint_time`, 
+			`time_id`, 
+			`time`, 
+			`create_time`
+		)
+		values
+		(
+			#{id}, 
+			#{roomId}, 
+			#{orderNumber}, 
+			#{userId}, 
+			#{status}, 
+			#{appointTime}, 
+			#{timeId}, 
+			#{time}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.wfuhui.modules.order.entity.OrderEntity">
+		update appoint_order 
+		<set>
+			<if test="roomId != null">`room_id` = #{roomId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="appointTime != null">`appoint_time` = #{appointTime}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from appoint_order where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from appoint_order where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!-- 查询近7天已完成预约数 -->
+	<select id="queryOrderCount" resultType="java.util.Map">
+		SELECT
+		date_format(create_time,'%Y-%m-%d') as createTime, count(1) count
+		FROM
+		appoint_order t1
+		where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;=
+		date(create_time)
+		GROUP BY date_format(create_time,'%Y-%m-%d')
+	</select>
+
+</mapper>
